@@ -5,8 +5,10 @@ enum types {
     CHANGE_MARGIN = 'changeMargin'
 }
 
-const action1 = () => ({ type: types.CHANGE_COLOR as const, color: 'black' })
-const action2 = () => ({ type: types.CHANGE_MARGIN as const, margin: 20 })
+const myConst = <T extends string>(t: T): T => t // builtin 'as const'
+
+const action1 = () => ({ type: myConst(types.CHANGE_COLOR), color: 'black' })
+const action2 = () => ({ type: myConst(types.CHANGE_MARGIN), margin: 20 })
 
 const actions = {
     action1,
@@ -14,7 +16,7 @@ const actions = {
 }
 
 type InferedTypes<T> = T extends { [p: string]: infer U } ? U : never
-type RType<T> = T extends () => infer U ? U : never
+type RType<T> = T extends () => infer U ? U : never // builtin 'ReturnType<T>'
 
 const initialState = {
     color: 'white',
