@@ -5,11 +5,11 @@ interface Person {
 
 const Person = function (this: Person, name: string) {
     this.name = name
-
-    this.sayHello = function () {
-        console.log(`Hi, my name is ${this.name}`)
-    }
 } as any as { new (name: string): Person }
+
+Person.prototype.sayHello = function () {
+    console.log(`Hi, my name is ${this.name}`)
+}
 
 interface Developer extends Person {
     writeCode (): void
@@ -17,13 +17,13 @@ interface Developer extends Person {
 
 const Developer = function (this: Developer, name: string): void {
     Person.call(this, name)
-
-    this.writeCode = function () {
-        console.log(this.name, 'writes code')
-    }
 } as any as { new (name: string): Developer }
 
-Developer.prototype.__proto__ = Person.prototype
+Developer.prototype.writeCode = function () {
+    console.log(this.name, 'writes code')
+}
+
+Object.setPrototypeOf(Developer.prototype, Person.prototype)
 
 const person = new Person('John')
 person.sayHello()
